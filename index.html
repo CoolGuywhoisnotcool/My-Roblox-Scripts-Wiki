@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Script Wiki</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 30px;
+        }
+
+        .search-bar {
+            width: 50%;
+            padding: 12px 20px;
+            margin-bottom: 30px;
+            border-radius: 25px;
+            background-color: #333;
+            color: white;
+            font-size: 18px;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            outline: none;
+            text-align: center;
+        }
+
+        .search-bar:focus {
+            background-color: #444;
+            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .create-form {
+            width: 80%;
+            max-width: 900px;
+            background-color: #1f1f1f;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+            display: none;
+        }
+
+        .form-title {
+            font-size: 24px;
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-field {
+            width: 100%;
+            margin-bottom: 20px;
+            background-color: transparent;
+            border: 2px solid #444;
+            padding: 10px 15px;
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-field:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+        }
+
+        .upload-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00ffff;
+            color: #121212;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-button:hover {
+            background-color: #00b3b3;
+        }
+
+        .create-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #00ff80;
+            color: #121212;
+            border: none;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .create-btn:hover {
+            background-color: #00e066;
+        }
+
+        .script-card {
+            display: flex;
+            flex-direction: column;
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .script-card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .script-card h3 {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .script-card p {
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .script-card a {
+            color: #00ff80;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .script-card a:hover {
+            color: #00e066;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Barre de Recherche Centrée en Haut -->
+    <input class="search-bar" type="text" placeholder="Search for a script or creator..." id="search" oninput="checkAccess()">
+
+    <!-- Formulaire pour Créer un Nouveau Script (Masqué par défaut) -->
+    <div class="create-form" id="create-form">
+        <div class="form-title">Create a New Script</div>
+        <input class="form-field" type="text" placeholder="Script Title" id="scriptTitle">
+        <textarea class="form-field" placeholder="Description of the script" id="scriptDesc" rows="5"></textarea>
+        <input class="form-field" type="file" id="scriptImage">
+        <textarea class="form-field" placeholder="Enter your script code here" id="scriptCode" rows="10"></textarea>
+        <button class="create-btn" onclick="createScript()">Create Script</button>
+    </div>
+
+    <!-- Affichage des Scripts Créés -->
+    <div id="scripts-container">
+        <!-- Les scripts créés apparaîtront ici -->
+    </div>
+
+    <script>
+        const accessCode = "aividedghost";
+
+        function checkAccess() {
+            const searchQuery = document.getElementById('search').value;
+            if (searchQuery.toLowerCase() === accessCode.toLowerCase()) {
+                document.getElementById('create-form').style.display = "block";
+            } else {
+                document.getElementById('create-form').style.display = "none";
+            }
+        }
+
+        function createScript() {
+            const title = document.getElementById('scriptTitle').value;
+            const desc = document.getElementById('scriptDesc').value;
+            const code = document.getElementById('scriptCode').value;
+            const imageFile = document.getElementById('scriptImage').files[0];
+
+            if (title && desc && code && imageFile) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const scriptCard = document.createElement('div');
+                    scriptCard.className = 'script-card';
+
+                    const imageElement = document.createElement('img');
+                    imageElement.src = e.target.result;
+                    scriptCard.appendChild(imageElement);
+
+                    const titleElement = document.createElement('h3');
+                    titleElement.textContent = title;
+                    scriptCard.appendChild(titleElement);
+
+                    const descElement = document.createElement('p');
+                    descElement.textContent = desc;
+                    scriptCard.appendChild(descElement);
+
+                    const scriptLink = document.createElement('a');
+                    scriptLink.href = '#';
+                    scriptLink.textContent = 'View Script';
+                    scriptLink.onclick = () => viewScript(code);
+                    scriptCard.appendChild(scriptLink);
+
+                    document.getElementById('scripts-container').appendChild(scriptCard);
+                }
+
+                reader.readAsDataURL(imageFile);
+            } else {
+                alert('Please fill in all fields and select an image!');
+            }
+        }
+
+        function viewScript(code) {
+            alert('Script code: ' + code);
+        }
+    </script>
+</body>
+</html>
